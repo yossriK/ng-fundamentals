@@ -1,0 +1,58 @@
+use angular cli to create a new angular project, complete with configs to get your app ready for production. can get cli using npm install -g @angular/cli
+
+use : ng new 'template name' to create a new an template for our angular project
+
+angular.json : have some configs for our web packing....
+and package json(tells you what dependencies you got) ~ this sign would mean the approximate version ( means would include other batch)
+in src: app folder: most of our coding in
+	assets folder: statics stuff like our images ...
+{ there was some stuff to lock json files and the packages but I could care less at this point}
+
+--- Angular 1 vs angular 2
+angular 1 is now referred to as angular js
+angulra 2 is simply angular
+
+angular js is MVC architecture/framework where you have view/template that relates to controllers that exposes other mdoesl that represent data
+angulra you have component that is one to one with template; you still got mdoels to represent data. component in angular can be thought of as directive in angyular
+that get html and logic all together  1 but it was more cohesive and felt cluncky
+
+
+angular app is bootstrapped
+    hierarchical component tree have at its top app component, ==> this got the tempalte, styling and ts file.
+    bootstrapping starts with the main.ts file that is linked at angular.json file (check main property), main.ts loaded when app starts, in there I link to appcomponent.ts, and
+    in the modules I bootstrap app component as well, double check those sir. but how do I display component??
+
+    look in app.component.ts, it got the selector that is refered in index.html. indexhtml loads first then this gets appcomponent
+
+
+
+==-- App module: 
+    when adding component, pipe or directive you should add them in declration sectiuon 
+    services are added as provider,
+    in imports you add other external providers and they become available thru the app I guess 
+
+
+
+===-- how to use static assets in our files
+    go add images in the assets folder
+    linking here works as I am referncing the assets/images folder in our angular.json file that will be included in our app bundle(tells our webpack to do so )
+    these were in the "assets" array that you can put images or icons, for scripts lets say there is "scripts" you can put your stuff there 
+    I got some new packages installed, then I just refer them into our angular json file 
+
+---=== 
+getting scss styling from external package, what we did was usng a twitter package or so, npm isntall ngf-bootstrap --save 
+    this package got ng-bootstrap, and jquery(not needed for anguylar dev but got it here) jquery got some help for our menus
+
+
+
+----=== Binging and addings strings to html
+{{object}} ==> this is interpolation htat represents oen way binding. Angular will look for that object in the component
+we use thsi /$ to escape the dollar sign in a html if it is string literal: like html in the compoent itself usign ``
+[input parameter in the reciever componet]=(member in our component, the sender)
+
+---== pass data from parent component to child component
+we importt Input from angular, and put @Input infront of the varible that we expect to be sent from a component to another 
+<event-thumbnail [event]="event1"></event-thumbnail>
+[input parameter in the reciever componet]=(member in our component, the sender)
+
+---== pass data from child component to parent8 component
