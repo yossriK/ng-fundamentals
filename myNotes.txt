@@ -179,3 +179,81 @@ created a service to wrap that roastr
 
 
 ==>> wathc out when getting 3rd party services, they might need to be installed after a certain jquery library
+
+
+                            ===---=== Routing and navigating pages ===---===
+before advant of single page app all pages weree distinct and served separately and another call to be done for server for each page, and all the page would be replaced
+now it loads single page from server namely index.html and rest are done using js and partially also not the whole page would be reloaded
+Angular made this very simple for us
+
+===--Adding multiple pages to your app
+we just added another extra page for the details, id of the item passed in route and when the detial component is loaded we will get that id and fetch it from server
+we have index.html bootstrapping someother element that got some child and that woudl be main page; moving on we want to use router-outlet: thatll display a route based on
+their respected url 
+import { Routes } from '@angular/router'; and add tyope Routes for array of routes object for more safety in routes.ts import this in appmodule by RouterModule.forRoot(appRoutes)
+also in index.html we indicate that we are hosting this at teh base level of our app isign base href="/"
+so add outlet in appComponent, define your routes, add routes to imports, add base href 
+
+
+--==-- puling query param from the route: have to pass first, recheck your routes; usign activatedRoute service
++this.activatedRoute.snapshot.params['id']: how we got the id parameter 
+
+==--== Linking to routes 
+[routerLink]="['/evetns', event.id] turns the div to a link, wehn you click on it it will take you to that page
+can also add this to <a> in navbar
+
+==--== Naviagting from code
+ { path: 'events/:id', component: EventDetailsComponent },
+ { path: 'events/new', component: CreateEventComponent} --> put this on top of the lsit I guess for now( or change the whole name lol)
+ angular cant differeniate between those 2 dummy paths so make sure to have a path between them
+
+to call from code on click of button inject the import { Router } from '@angular/router'; into that component and bind that click onto a method, in the method you can then
+        this.router.navigate(['/events']);
+
+
+==--=== Gaurding against route activation 
+intellisence have tehe canActivate and deDeActivate; route gaurd to take me to 404 if id is invalid lets say 
+create 404 error componennt, add to app modules, then add routing to it
+
+have a new activator service that mplenments canActivate. has a method that takes activated route snapchot,
+on the routes.ts check which route i Want validation/gaurd for and then jsut add canActivate over there with what service it should speak to
+we used a service for this functionality 
+
+==--== Gaurding agains route De-activatiion
+to prevent from getting user to leave a page before saving their data, lets say leaving before saving their new event
+dont need a whoel service, can jsut define a function in the routes and register it in providers in app modules: (using short hand syntax)
+
+
+==---== Preloading data for components using resolver handler
+prefetch necessary for component and do prechecks before loading the comoponent especially in real world 
+tried to make them async in our example here
+what was happeingin is you can get compoenent to partially load and that is because we have header/title then data, so we dont want anything to display before getting my data
+
+adding a resolver service, takes resolve as import and we map the data in there before sending them back to our component, and add the resolvier in appmodule and the respected route
+    { path: 'events', component: EventsListComponent, resolve: {events: EventListResolver} },
+notice I am passing an object to resolve, it goes to that resolver and get from there events 
+
+==> all other routin to that page was affectes so look into that
+
+==--== styling active links 
+ routerLinkActive="active" add this to that div/a/li element and when that link is active it will apply that css syling class to it ,
+  this will apply to all routes carrying first prefix so change it to full match
+ [routerLinkActiveOptions]="{exact:true}"
+  li> a.active { color: #F97924;} .. added > so doen get overridden by bootstrap
+
+
+
+===---=== Lazily loading Feature modules 
+adding more modules to my app instead of only app.modules
+as we might have a portion of the site that is different from other stuff like user and events are didff, so want a diff module
+we use commonmodule in the imports of the childmodule now, and use RouterModule.forchild(customroutes) (it was .forRoute in the main moudle)
+
+add this in our routes.ts, you refer to the folder where is in in and the name of our other moduel
+    { path: 'user', loadChildren: './user/user.module#UserModule'}
+
+
+--==-- organizing your exports with barrels
+can clean code as well with module breaking
+creating barrels for our many imports called index.ts ( this can hvae index.ts from other diretories)
+go check the index ts file we got
+then we go to modules and jsut import what needed from those idnex file, makes our code cleaner a bit

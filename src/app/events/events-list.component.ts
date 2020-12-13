@@ -1,5 +1,6 @@
 import { toBase64String } from '@angular/compiler/src/output/source_map';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from '../common/toastr.service';
 import { EventService } from './shared/event.service';
 
@@ -12,14 +13,19 @@ import { EventService } from './shared/event.service';
 })
 
 export class EventsListComponent implements OnInit { // typescript safety is to implement this interface when we usign this ngonint method
-    events: any[];
+    events: any;
     constructor(private eventSrevice: EventService,
-        private toastr: ToastrService) { 
+        private toastr: ToastrService,
+        private route: ActivatedRoute) { 
       
     }
 
     ngOnInit() { 
-        this.events = this.eventSrevice.getEvents();// these are bad to have in constructor
+        // these are bad to have in constructor
+        // this.eventSrevice.getEvents().subscribe(events => {this.events = events}); this commented as now done in resolverS  
+        // data is now passed in the route
+        this.events = this.route.snapshot.data['events'];
+
     }
     
     handleThumbnailClick(eventName){
