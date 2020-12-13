@@ -50,9 +50,68 @@ getting scss styling from external package, what we did was usng a twitter packa
 we use thsi /$ to escape the dollar sign in a html if it is string literal: like html in the compoent itself usign ``
 [input parameter in the reciever componet]=(member in our component, the sender)
 
----== pass data from parent component to child component
-we importt Input from angular, and put @Input infront of the varible that we expect to be sent from a component to another 
-<event-thumbnail [event]="event1"></event-thumbnail>
-[input parameter in the reciever componet]=(member in our component, the sender)
+=== Three ways for intercomponent communication
+    ---== pass data from parent component to child component
+    we importt Input from angular, and put @Input infront of the varible that we expect to be sent from a component to another 
+    <event-thumbnail [event]="event1"></event-thumbnail>
+    [input parameter in the reciever componet]=(member in our component, the sender)
 
----== pass data from child component to parent8 component
+    ---== pass data from child component to parent8 component
+
+    @output when I want to send something from child component to the parent component 
+    so in child component can have something like this 
+    @output evnetClick = new EventEmitter(); 
+
+    when button clicked funcntion()
+    {
+        this.evnetClick.emit(anydata);
+    } ..> this all done in the child 
+
+    now in the paernt i recieve the event liek this; in html for example
+    (evnetClick(match same output property of child)) = "newCustomFunctionMadeinParentToHandleTheEmited($event(this refers to data emitted from event, single object))"
+
+
+    ---=== acccessing public property of child compoents: Template refernce variable using # syntax
+        allow to specify varibale name that points to a component and we access sstuff using that variable
+        <event-thumbnail [event]="event1"></event-thumbnail> ==> thsi was how wer reference the child in parent html 
+        so to add variable we do this in the html #thumbnail(radniom name) to look like this ==> <event-thumbnail #thumbnail [event]="event1"></event-thumbnail>
+        
+        now from parent html I can do thumbnail.functionNameInChild , and that should call it for me, 
+        or jsut access any other property like this thumbnail.propertyName
+
+
+
+==--=-= Applying css styles on componetn
+angular has some good built in functionality to add styling
+view encapsulation : applies changes to specific selectors wuithin your scope so your css doesnt bleed into other components.
+
+you can use global styling in the style.css folder and apply that to all of your other files, but to be more specific in your css changes, angular would take care of that for you.
+you can use SMACC for more crafting of what applys to what 
+
+
+---=== Adding site header 
+we will want to add app-router known as router outlet component, and then each top level component page will be displayed over, 
+so we added navigation compoent on top of that the events-appcomponet
+
+
+            ===---=== Exploring the angular Template Syntax ===---===
+Interpolation {{objectname(namely an expression)}} and property binding [property] ="expression" ;
+both are used to bind data form component to template, interpolation to display data, while binduign when I want to bind it to teh dom element
+
+in these expressions cant do assigbnemnt( =, +=, ++ etc), new kewowrd, cant chain expressions together, cant access anythign from global namespace
+
+expressions recommendations is to have no side-effects, be fast, be simple, idempotent(return same result always) 
+
+-- evetng binding and statements
+(click)_="doSomethign()", binding the click event to statement that is the function
+
+same restrictions as expressions, for assignemnts = is allowed, others still hold, and allowed to chain using '
+they are not required to be idempotent and ouwould have side effect and not fast always
+they should be siomple
+
+== Repeating data with NgFor
+ *ngFor="let event of events" [event]="event"
+ the '*' indicates that ngFor is a structural directive : change the cshape of the DOM as they add or remove elements from dom , 
+ we passed to ngFor directive:  we created a local variable; 'events' was an array in the component. where that directive(ngfor) was put that element and all elements inside of it 
+ will be repeated
+ notice the styluing he added for column and row, was great great
