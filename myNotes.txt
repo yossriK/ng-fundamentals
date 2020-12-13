@@ -115,3 +115,67 @@ they should be siomple
  we passed to ngFor directive:  we created a local variable; 'events' was an array in the component. where that directive(ngfor) was put that element and all elements inside of it 
  will be repeated
  notice the styluing he added for column and row, was great great
+
+== handle null values : Safe navigation operator
+what if I sent values to the thumbnail that was null, or sent nothign at all but the component was expectign something lets say, in angular the app would actually break even 
+tho the page displays no error( gotta inspect to see errors)
+ to solve this, where ever a value is being passed to me, string interpolation lets say we gotta add a question mark to the end of the thingy/variable/expression
+ might have to add this to inner properties as well like event.location.adada. this might work with just ? for event?.lcoa.sda  but what if lcoation wasnt there then we need to add
+ for location property as well
+
+ == hiding and shwoign content with ngif
+ *ngif="event?.location" add somethign like this in the div, it doesnt just hide but it wont render at all at dom and wont do anywork
+you wont see this element in the inpsect tools
+
+ == hiding content with [Hidden] binding: 
+ done in the case just hide then reshow, if it is done more frequent go with this method as if you go with the one above to not render it might be costly to then render again,
+ so we just hide it, better from performance points
+we can use [Hidden] property in the div to just hide it, it is still rendered, this is html thing but the angular binding makes it great
+you will see the element in inspect tool having the hidden attribute
+
+== hiding values with ngswitch: maybe like multiple options to hide or show
+[ngSwithc]="value/expression" bounds what value we are watching
+*ngSwitchCase= "'8:00 am'" string match for that value to get it runnign or not
+*ngSwitchDefault this wouodl be the default value to fall into
+css trick : you can keep the span in the div and will show beside it 
+
+== styling components with ngClass  
+class binding, if theis expression then add a certain class to this div [class.green]="some expression that woudl value to true ro false, can have somethigin = soemthieng and this logic is acceptatble"
+but what if I want more thatn one class to bhe shown, then I need to do some else stuff, where ngClass comes in 
+ngClass expects an object, mroe of a key-vlaue pair, the key is the css class I want to apply and the pair is if it true or false to apply 
+or can return string, or array of classes I want to put there
+the object is {green: expression to value to tryue or false, another class: another expression }
+thsi also applied to that div of the element 
+
+== styling components with ngStyle 
+[style.color]="expresion evaluation ? style1 : style2" but what if want 2 styles
+ngStyle same inline format as ngClass
+
+
+            ====---==== Creating reusable services  ===---===
+
+== Why are services necessary, 
+want pieces of application to be reusable 
+thub=mbnail responsible for how event looks like on stylking
+but comopnenet need not to do business logic and get items/events ... thats too much responsibility for the component
+that need to be done by other service, and there dependency injection 
+service to serve us the data we looking to display
+
+
+--==-- creating first service
+this is nice to have for our services that we inject a service in the constructor of a comopnent. this is needed when we have an injection in teh service and the service is being referred in anither place
+then all injected in it will be availlable for other components
+
+import { Injectable } from '@angular/core';
+@Injectable 
+
+not goood to have the call to service in a constructor and it might be delayed , but we need that item in component once it start
+so angular have life cycle hooks that we can hook onto once the compoent loads they get called:: ngOnInit()
+
+==---===  usign third party libraries, injecting them in our code, basically wrapping them
+we will use toaster for example for some pop up messages, these had some styles and js that we need to import in our styles and scripts in angular.json,
+however the components might not know about it/ complain even it is in our app scope and thus we need to declare it in that component by declare let 'new servicename'
+created a service to wrap that roastr
+
+
+==>> wathc out when getting 3rd party services, they might need to be installed after a certain jquery library
