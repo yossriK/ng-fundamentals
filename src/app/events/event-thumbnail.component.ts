@@ -1,6 +1,7 @@
 // this will get display for one item/event then in the events-list we display many of these 
 // how to inject an event here
 import { Component, OnInit, Input } from '@angular/core';
+import { IEvent } from './shared';
 
 @Component({
     selector: 'event-thumbnail',
@@ -38,7 +39,8 @@ export class EventThumbnailComponent implements OnInit {
     constructor() { }
 
     ngOnInit() { }
-    @Input() event: any; // dont care what data type this is for now
+  //  @Input() event: any; // dont care what data type this is for now; this is old javascript, notice how we using 'any'
+  @Input() event: IEvent;
 
     someProperty: string = "some property form "
     logFoo(){

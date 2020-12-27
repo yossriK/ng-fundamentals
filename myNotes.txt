@@ -257,3 +257,25 @@ can clean code as well with module breaking
 creating barrels for our many imports called index.ts ( this can hvae index.ts from other diretories)
 go check the index ts file we got
 then we go to modules and jsut import what needed from those idnex file, makes our code cleaner a bit
+
+
+
+                ---=== Collecting data with angular forms and validation===---
+usind data models for type safety, then type based forms and model driven forms, twa way data binding, custom validators
+
+--== using models for type safety: instead of always using jsut 'any'. can have an interface or a model, 
+using ? with properties can mean they can be safely null
+after creating a specific model go replace the 'any' types with it 
+
+--== Creating your first template based form
+we have tempalte based and model based(reactive forms)
+tempalte based : can be done all in html, best for simple. restrains the logic and hard to do tests on tho
+model based allows you to put logic in component instead of template 
+
+created a simple sign in templpate, and dont forget to hook it to your routes and model. you need form model to hook your inputs to the component
+we have (ngModel) that allows us to bind input fields (ngModel)="userName". () bind from html to the component, [] bind from component to html. [()]: banana in the box syntax, two way binding
+[(ngModel)]: we might do this if want to edit the display data as well.
+so have (ngModel)="userName" and name ="userName" in your html
+i dont need a 'userName' in my component, they would just bind to the form, would just have to specify the form in our html like : #loginForm="ngForm', and (ngSubmit)="login(loginForm.value)"
+we jsut looking to get the value from the form atm, but ive seen in practice dont need to pass the form back  through ngsubmit we can jsut have enough by binding the form in our comoponent
+we didnt declare the bindings from the template in our comopoenet and then running in production mode gave some issues hmmm
