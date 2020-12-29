@@ -267,7 +267,7 @@ usind data models for type safety, then type based forms and model driven forms,
 using ? with properties can mean they can be safely null
 after creating a specific model go replace the 'any' types with it 
 
---== Creating your first template based form
+--== Creating your first template based form  ==> this is hte login component, we impoirt FormsModule to use it
 we have tempalte based and model based(reactive forms)
 tempalte based : can be done all in html, best for simple. restrains the logic and hard to do tests on tho
 model based allows you to put logic in component instead of template 
@@ -279,3 +279,34 @@ so have (ngModel)="userName" and name ="userName" in your html
 i dont need a 'userName' in my component, they would just bind to the form, would just have to specify the form in our html like : #loginForm="ngForm', and (ngSubmit)="login(loginForm.value)"
 we jsut looking to get the value from the form atm, but ive seen in practice dont need to pass the form back  through ngsubmit we can jsut have enough by binding the form in our comoponent
 we didnt declare the bindings from the template in our comopoenet and then running in production mode gave some issues hmmm
+
+--== using data from template based form 
+we also tried to log user in, just used hardcoded stuff for the time beign
+we also have isAuthenticated method to check if the user is actually signed in or not
+dont forget to register the services in your provider; it is enough to just save them in the appModule, and can be used anyelse where in the app. for imports no, you have to add them to other modules as well
+
+--== validating template based forms
+so like to actually have inputs before populating input fields
+'required' is an html5 attribute that can be used, but we want to use angular validation before htting a service for example so apply 'novalidate' on top of the form
+there are many form validators that can be used, like form.valid :: example [disabled]="loginFrom.invalid"
+<em *ngIf="loginForm.controls.password?.invalid">Required</em> this is an error message to be displayed if the inputs were not filled so to speak: dotn forget to use the safe navigator: '?' because some fields arent always available,
+and you dont want errors
+also a cool thing to do is when you hover over the disbaled login button you can display a small message that why the form is invalid. the disabled buttons dont fire events so this has to be done in a span
+    <span (mouseenter)="mouseoverLogin=true" (mouseleave)="mouseoverlogin=false">,  mouseoverlogin is a boolean in the compoent
+
+
+--=== reactive forms
+ so far we had template driven forms building logic in html 
+  reactive is to have all in component and then wire validation to the html lets say. this way we can unit test this, 
+  lets make a module driven form 
+  ==> this is the profile component
+  we created formcontrols for the inputfields/values we have in the html. these controls to be added to a form so we use a form group for that
+  in the html : [formGroup]="profileForm"  is how we bind our form element into profileform that is in our componetnt
+  then to bind the inputs to actual property in your profileform that they should be bound to using formControlName="lastName'
+  for this model-based forms you have to import reactiveFormsMdoule
+  for this example we wanted prepopulated information ok
+
+    --== validating reactiveforms refer to the profile.component to see how the validation was done. pretty neat actually. too lazy to put all ntoes here
+    this can be in component rather in html, adn Validators.required); can be just added in your formcontrols
+    we can use ngClass binding to set what I class I want to show based on whatever error or so lol
+    had our firstname and lastname as form controls and got extra validation we can apply on. we get the actual input values from the input form

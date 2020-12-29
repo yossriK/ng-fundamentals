@@ -15,6 +15,7 @@ import {
   EventThumbnailComponent,
   EventsListComponent
 } from './events/index'
+import { AuthService } from './user/auth.service';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import {
               ToastrService,
               EventRouteActivator,
               EventListResolver,
+              AuthService,
               {
                 provide: 'canDeactivateCreateEvent',
                 useValue: checkDirtyState
@@ -48,8 +50,6 @@ export function checkDirtyState(component: CreateEventComponent) {
   if (component.isDirty)
     return window.confirm(' your not saved, you actually want to leave this');
   return true;
-
-
   // if just this reutrn is here: this will disable all routes
   //return false;
 }
