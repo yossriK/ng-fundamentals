@@ -293,6 +293,7 @@ there are many form validators that can be used, like form.valid :: example [dis
 and you dont want errors
 also a cool thing to do is when you hover over the disbaled login button you can display a small message that why the form is invalid. the disabled buttons dont fire events so this has to be done in a span
     <span (mouseenter)="mouseoverLogin=true" (mouseleave)="mouseoverlogin=false">,  mouseoverlogin is a boolean in the compoent
+    in addition validators be applied directly in the html element: like add required and pattern="yada yada ya " to the div
 
 
 --=== reactive forms
@@ -305,8 +306,50 @@ also a cool thing to do is when you hover over the disbaled login button you can
   then to bind the inputs to actual property in your profileform that they should be bound to using formControlName="lastName'
   for this model-based forms you have to import reactiveFormsMdoule
   for this example we wanted prepopulated information ok
+  this.profileForm = new FormGroup({
+      firstName: this.firstName,
+      lastName: this.lastName
+    }) where first and lastName where formcontorls: this function was on ngonit and will prepopulate these forms for us
 
     --== validating reactiveforms refer to the profile.component to see how the validation was done. pretty neat actually. too lazy to put all ntoes here
     this can be in component rather in html, adn Validators.required); can be just added in your formcontrols
     we can use ngClass binding to set what I class I want to show based on whatever error or so lol
     had our firstname and lastname as form controls and got extra validation we can apply on. we get the actual input values from the input form
+
+    -== using multiple validators:;
+    we can pass array of validators to the form::     this.firstName = new FormControl(this.authService.currentUser.firstName, [Validators.required, Validators.pattern('[a-zA-Z ]*')]);
+    and in the html you display the error like thsis:      with the ngif checking the validity to display error or not     <em *ngIf="!validateFirstName() && profileForm.controls.firstName.error.required">Required</em>
+
+-=-== Diving deeper into tempaltebased forms
+lets do a creaet event form
+remember how i needed to declare some the the variables in the form in the componet, but there was a loit of tehem, so he declared them on an object like: he access the variabels from 
+newEvent.variable name, so from a new Event object you know what i mean, then he would just need to add that one object to the component::smart
+again dont forget your FormsModule from angluar to be added to hte right module.ts
+the form inputs we had were not mapping directly to our Event model, like location subnet, but angular allows us to do that mapping using ngModelGroup:="nameofparent", and whenm
+you submit that form it will all by itself create that object for you. I might not even needed the variables to be even created in the componetnt 
+wehn saving the model we already have same shape coming in from the form so we pass it as is
+also remember your dirty flag, so once we saved to be false
+
+
+
+-==-= editing data with 2 way binding
+(ngModel)="event.date" name="date": name is used to populate the form value and (ngModel) is used to bind to objects on the component
+so use the [()]: banana in the box syntax
+
+--== diving deaper to reactive forms
+we had some createSession page thatll use reactibve forms
+had some drop downs in there as well.
+the form we created in component was public so we can access that in our html template. other memebers can be private then in htnml you access them thru the form, if you keep them private no problem
+compare profilecomponent with this component to see some of the differences
+wire the input to each of theur control in the component by: formControlName="nameofthat control in your component"
+-check how we did sanity check on that form htat we expected to be same as our sessionModel
+-formvalues passed are of type any 
+
+--== creating custom valiators:easier to do on reactive form
+will restrict some words to be addesd: 
+    private restrictedWords(control: FormControl): {[key: string]: any} {
+this returns javascript object; either an error if restricted word is there or null.
+        this.abstract = new FormControl('', [Validators.required, Validators.maxLength(400), this.restrictedWords]);
+ and just add it there. check how error was wired in teh moduel: abstract?.errors.restrictedWords in html: the restircedWords matches the key we return in hte function
+ hten we updated the validator that was a function: we wanted to pass array of words: so we make that inital validator a jsFunction that will return a fat arrow function
+ at las we made it a reusable valiator( note: might need reshaping how it chekcs for words, overlall it works hjust fine)
