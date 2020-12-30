@@ -353,3 +353,24 @@ this returns javascript object; either an error if restricted word is there or n
  and just add it there. check how error was wired in teh moduel: abstract?.errors.restrictedWords in html: the restircedWords matches the key we return in hte function
  hten we updated the validator that was a function: we wanted to pass array of words: so we make that inital validator a jsFunction that will return a fat arrow function
  at las we made it a reusable valiator( note: might need reshaping how it chekcs for words, overlall it works hjust fine)
+
+
+
+            --===communication between components ========---
+
+
+--== passing data into child component
+can dispaly a component using its selector, but how do we pass data to that child component. refer back to event details component and session-list
+    <session-list [sessions]="event?.sessions"></session-list>      : in parent html
+    and willhave sessions property in the child component
+    "event?.sessions":: is available in the parent componet and htmkl
+
+
+
+--== passing data out of a child component
+basically done in respect to some event usually, can be done using the @output
+ he linked create session to teh eventdetail    : interesting how we hide a component to show another 
+ when we add session we want it to be saved to the main parent event. gotcha
+ used an event emitter in teh child component to emit that newly created session
+ in eventdetailhtml we bind to the 'saveNewSession' event fired from createSessionComponent. and when thats fired we're going to call saveNewSession in EventDetailsComponent and pass in the event that is emitted: which adds that session to 
+ the event and updates that event
