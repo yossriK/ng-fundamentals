@@ -374,3 +374,23 @@ basically done in respect to some event usually, can be done using the @output
  used an event emitter in teh child component to emit that newly created session
  in eventdetailhtml we bind to the 'saveNewSession' event fired from createSessionComponent. and when thats fired we're going to call saveNewSession in EventDetailsComponent and pass in the event that is emitted: which adds that session to 
  the event and updates that event
+
+
+
+        --== Reusing Components with Content Projection ==--
+        Content Projection: ability to change content of a component based on the needs of application. I think thsi is called transeclusion in anglular 1
+        so like have a dialog box wrapped in a ciontianer that can be reused and save us another implementaion 
+
+-== Content Projeciton
+lets collapse the sessions and only show title, once clicked on it can expand to normal size
+      <collapsible-well [title]="session.name">: added in the sessionlist html
+ binding to that session.name
+ notice how he used the <ng-content> in the collapsible-well html : so whatever content was in our session componet html if you go back to it, I wnat it refered in my collapsible
+
+ --== multiple slot projection
+ what if I want to add votes or something thatll be specific for each session, more logic contatined in the binding now
+ notice how bindign have chagned
+ and how the title and body tags(changed later to div with those respected class? changed later to attribute) had to be specified to angular: how which piece of html from sessionlist to show where in the collapsiblewell ng-content
+        ==> this can be done using optional select attribute:         <ng-content select=".title"></ng-content> thats when usign class="title" in sessionlist
+        when changed to attribute: became like this :   <div well-title> in session and         <ng-content select="[well-title]"></ng-content> in the collapsiblewell
+latter is better usign the att selector vs the normal class cause it might conflict with you r actuall css classes, and makes the div for recongnixible

@@ -1,4 +1,4 @@
-<div class="row" *ngFor="let session of sessions">
+<!-- <div class="row" *ngFor="let session of sessions">
     <div class="col-md-10">
       <div class="well">
           <h4>{{session.name}}</h4>
@@ -8,4 +8,23 @@
           <p>{{session.abstract}}</p>
       </div>
     </div>
+  </div> -->
+<div class="row" *ngFor="let session of sessions">
+  <div class="col-md-10">
+    <!-- <collapsible-well [title]="session.name"> had thsi initially but when added the voters the binding became different so i dont want the bindign to be donw this way-->
+    <collapsible-well>
+      <div well-title>
+        {{session.name}}
+        <i *ngIf="session.voters.length > 3" class="glyphicon glyphicon-fire" style="color:red"></i>
+      </div>
+
+      <div well-body>
+        <h6>{{session.presenter}}</h6>
+        <span>Duration: {{session.duration}}</span><br />
+        <span>Level: {{session.level}}</span>
+
+        <p>{{session.abstract}}</p>
+      </div>
+    </collapsible-well>
   </div>
+</div>
