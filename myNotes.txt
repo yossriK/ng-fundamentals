@@ -394,3 +394,58 @@ lets collapse the sessions and only show title, once clicked on it can expand to
         ==> this can be done using optional select attribute:         <ng-content select=".title"></ng-content> thats when usign class="title" in sessionlist
         when changed to attribute: became like this :   <div well-title> in session and         <ng-content select="[well-title]"></ng-content> in the collapsiblewell
 latter is better usign the att selector vs the normal class cause it might conflict with you r actuall css classes, and makes the div for recongnixible
+
+
+
+            --=== Displaying data with data
+ in angular 2 there was some issues in sorting and filtering. formatting still exists from Angular 1 but the rest was modified
+--== build in pipes:
+one example was to pipe all titles to be upper case:             <h2>{{event?.name | uppercase}}</h2>
+for date =  {{event?.date | date:'shortDate'}} also check how parameters for teh date was passed
+also notice how we piped the currency kind : \${{event.price}} to {{event.price | currecny:'USD'}} wehre USD can be binded from component if needed in teh future
+
+--== Creating a custom pipe
+wanted a duration pipe for each event duration
+look into duration.pipe.ts: use pipe decorator that takes in name of the pipe
+ @Pipe({
+    name: 'duration'
+})
+then implementing transform function that takes input value and outputs whatever desired thing you want
+have to make angular 2 aware of the new pipe : has to be added to the declaaration section sir
+
+
+
+--=== Sorting and filtering overview
+=>Primtive Identity: primitive varialbles saved in a specific memory location saving variable and value to gether in small slot and its easy to compare them and stuff
+=>Object Identity: objects stored different, the variable points to a certain memory location, and JS comparison would give you false on these guys. so if I had 'a' and 'b' initially 
+then i set 'c' to 'a' (c=a) now 'c' is actually poiting to object 'a' as well, it didnt crate a new object. comparing a and c would return true as tehy pointng to same object.
+i can change 'a' and not c but the compariso is true. however is i say a={} that is new object then a and c comparison would fail 
+=> Mutability: stuff would change. so given an array of items, we edit it then compiler needs to render and update your view: how does it detect the change.
+if it was primitive types thatll be weasy operation, but for objects it is stuff especiialy how they track memory. if you want to go through each item in list that will be a costly 
+operation hmm?
+Another option is 'Impure Pipes' that run on EVERY change detection cycle, but this would run with every event run/fired in your application. so if you move mouse then you are going 
+to detect data change and resort if you want ?? so this some of the performanace problems in angular 1.
+Pipes are no longer recommended to filter and sort in Angular 2, instaed do it your self, and make it more efficient and customizable; so how do we do it correctly 
+
+--== Creating a filtering display
+wanna filter the ssessions: they have different levels
+this was done in teh even-details component
+jsut adding some random buttons here and there: UI stuff
+
+==-- Filtering Data
+the filtering algorithm will be put in our session-list component: 
+notice how we passed that filtering variable to our child component: and how used the OnChagnes interface, with ngOnChanges method thatll be called whenever your input has changed:
+take care of your null gaurds and checking if avalues actully exist berfore filtering
+notice how we didnt modify the intial input sessions but had a temp visisblesessions
+::             this.visibleSessions = this.sessions.slice(0); notice how we cloned the thing
+:: = this.sessions.filter(session => {
+                return session.level.toLocaleLowerCase() === filter <-- one of the filtering options it only returns what matched that level
+
+
+its neat how where we added the logic to filter the sessions: was it the parent or child component
+
+==-- Sorting
+lets sort by name or votes
+same flow as the filtering
+there is a built in function on arrays that will help you sort: pass to it an inline function or normal function to do your sorting as you wish
+look how the sorting function on array  works and how we implemented the functions we passed to it
