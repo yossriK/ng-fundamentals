@@ -449,3 +449,57 @@ lets sort by name or votes
 same flow as the filtering
 there is a built in function on arrays that will help you sort: pass to it an inline function or normal function to do your sorting as you wish
 look how the sorting function on array  works and how we implemented the functions we passed to it
+
+        ==--== Understanding Angulars Dependency Injection 
+--== usign third party services
+made an example with toastr service we created at the beginning of this applicaiton 
+our toastr was global: and referneced in index. ]
+we also would inject it and had it wrapped in a funky way, was all cool but imagine having a greater API that we wanted to wrap.
+we had to wrap it because we didnt want to just globally reference it right? so need a way to use without wrapping and with out lgobal delcaration.
+
+--== Angular Dependency Injection 
+normally would import the service from its file and use the constructor to mark it as parameter and mark its type. that serve, AuthSErvice for example, and that ES6 class functionality
+is just syntactic sugar for a constructor function so basically we get a constructor from that export syntax
+where we inject it what we need is an instance of that service, angular 2 takes care of that part to create that instance for us whenever we refernce it in constructor function. 
+that service is being imported in appModule and registerd in provider
+
+---> private authService: AuthService, 'AuthService' is the marking here, and angular 2 gives us 'authService' as instnace of that mark. this marker is more of a key/token rather than string like angular 1
+uses the key as correct lookup in its dependency injection registery
+
+so how are we fixing that problem of the toaster.
+
+
+--== Using angular injection token
+we wont even need to have a toastrservice in order to inject it, lets see some magic
+
+injection token: token used in dependency injection registery to find the service we want.
+convention withtokens: all capps
+export let TOASTR_TOKEN = new InjectionToken<>('toastr'); ==> TOASTR_TOKEN is unique object so no conflicts when using it to look up your service in the registery.
+this 'new' takes a parameter of what it is supposed to return as type of service <>; it is hte type of injection token, can be put as any or he created an interface for it
+
+in app module now we use this TOASTR_TOKEN in the providers.
+nmotice how I moved the toastrSrvice gloabl variable to appModule
+
+how we ttell angular how to look for it is using the long hand provide  and use value  
+ {
+                provide: 'canDeactivateCreateEvent',
+                useValue: checkDirtyState
+              }
+
+    {provide: TOASTR_TOKEN, useValue: toastr } --> this means if you need the toastr object look for it usign the token 
+then in app module we marked that toastr value with the correct interface which will give us intellisence help
+
+
+--==using angular inject decorator 
+how do we inject using injection token now? the old way was all good :: old way authService: AuthService, 'AuthService' was type and token 
+example is in profile.compoent.ts:     @Inject(TOASTR_TOKEN) private toastr: Toastr)  in the constructor of profile.component.ts. Toastr type couldve been replaced by 'any'tbh 
+
+--== the useclass provider
+in providers I can have : Service on its own or  {provide: Service, useClass: Sevice } (this is long hand) I can be funky and for useValue can return some different instance
+
+--== the useExisting and useFactory provider
+{provide: MinimalService, useExisting: BigSevice } : MinimalService is a class not interface, and say i dont to use the all bigservice API implemention so MinimalService would
+have multiple methods of that big one, wehn they ask for MinimalService they get the big but only get to use what you have implemnted in MinimalService ----> not common but exists
+
+{provide: Service, useFactory: Service }: allows you to pass parameters on the creation of that injected service, so you can paramaterize the creation of an object: if you need to construct an instance 
+of a class to use in a service then that is the way 
