@@ -545,4 +545,10 @@ notice how we wanted to start teh trigger in ngonint, and how we used elementRef
            <button class="btn btn-default" modal-trigger="searchResults">
 
 
---== Routing to the same comopnenet
+--== Routing to the same comopnenet: 
+there was aa bug: url changes but it wont route there
+the state of the component was not reset in ngonint
+we have to lsiten to the route parameter subscription. we were not subscriping to that change in the route from when session forces a change
+
+changed the way we routed, subscriped to the route parameters and using that as navigation to a differnet page within the same component  keep track of allp
+    pieces of state: like in my case I had event and addMode states

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { IEvent, ISession } from '../shared/index';
 import { EventService } from '../shared/event.service';
 
@@ -22,7 +22,11 @@ export class EventDetailsComponent implements OnInit {
                 private activatedRoute: ActivatedRoute) { }
 
     ngOnInit() { 
-        this.event = this.eventService.getEvent(+this.activatedRoute.snapshot.params['id']);
+        // this.event = this.eventService.getEvent(+this.activatedRoute.snapshot.params['id']);
+        this.activatedRoute.params.forEach((param: Params) => {
+            this.event = this.eventService.getEvent(+param['id']);
+            this.addMode = false;
+        });
     }
 
     addSession() {
