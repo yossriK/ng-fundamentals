@@ -16,8 +16,8 @@ constructor(@Inject (JQ_TOKEN) private $ : any,
 
     ngOnInit() {
         this.el.addEventListener('click', e => {
-            console.log("I was triggered, did i show");
-        this.$(`#${this.modalId}`).modal({}); // this is the id of the modal i want to trigger
+            //console.log("I was triggered, did i show");
+            this.$(`#${this.modalId}`).modal({}); // this is the id of the modal i want to trigger
     });
     }
 

@@ -552,3 +552,12 @@ we have to lsiten to the route parameter subscription. we were not subscriping t
 
 changed the way we routed, subscriped to the route parameters and using that as navigation to a differnet page within the same component  keep track of allp
     pieces of state: like in my case I had event and addMode states
+
+--== Using hte @Viewchild Decorator: there is contendChild and viewChildren as well: not covered in this scope
+the dialog box was not closing, and we wanted it to close
+we wanted to get access to that DOM node. couldve done the same thing as modal trigger using refelement, but wanted another way here
+this way can get us to a specific element, instead of binding to the whole thing
+also notice how we referenced the ref for that modal container
+
+--== Creating setting on component: 
+what if dont want to close if they click inside the box
