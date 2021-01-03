@@ -571,3 +571,12 @@ basic componet creatiion and event binding
 --== Adding voting functionality
 trackigni if they have voted or not by their usernames
 notice how we added cuntionality in the session-list and added another votign service: notice how smooth these finctions are in the service dammn
+
+--== Hiding functionality before authenticating
+if you aret logged in this was to break. simple work by a div and ngif and isAuthenticated
+
+--== usign @input Setters: instead of having empty and white heart we wanted a red heart. can creat an input setter and bind to a css class then use ngOnchange 
+or another way as seen in the upvote component
+notice how we had an @input() set voted(val) {
+// i htink it took the value it was binded to in the other component
+}

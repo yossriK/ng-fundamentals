@@ -1,5 +1,5 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { AuthService } from 'src/app/user/auth.service';
+import { Component, Input, OnChanges } from '@angular/core';
+import { AuthService } from '../../user/auth.service';
 import { ISession } from '../shared/index';
 import { VoterService } from './voter.service';
 
