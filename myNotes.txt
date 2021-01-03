@@ -580,3 +580,29 @@ or another way as seen in the upvote component
 notice how we had an @input() set voted(val) {
 // i htink it took the value it was binded to in the other component
 }
+
+
+--== Creating a custom validator
+didnt have validaiotn for onlineurl and address yet: we will be creating a directive
+this is called locationValidator so you go recap on the code. implemented Validator from Angular forms
+notice how we used indexr syntax         let addressControl = control.controls['address'];
+
+also onlineUrl was different div         let onlineUrlControl = (<FormGroup>formGroup.root).controls['onlineUrl'];
+thats how we got its element
+
+its tree structure of controls that reflects the dom but doesnt include all elements so its tricky to get certain parts from there
+
+--=== Adding validator to angular's validator
+add it to NG_VALIDATORS(collection of services) service that hosts all the validators. injecting the services would be similar to this
+can use providers key in Directive just like we do in appmodule file.
+notiec how we set multi key to true: so that doesnt override the NG_VALIDATORS instead just adds to it
+    providers: [{ provide: NG_VALIDATORS, useExisting: LocationValidator, multi: true}] 
+
+--== implementing a mutli field validator
+the validaor was still messed. needed some more info
+we added a localref beside our directive in the html so we can now refernce the #locationGroup 
+we basically want one of address and url to be input so we can save. for address the validator was all good, but the directive
+only worked on that node. we needed the url input to change validty of the address if url was good. we took advangtage
+of the #locationGroup we added on the address div and that ref can actually be seen on other siblings lol
+
+(change) event thats emitted whenever an html input value changes
