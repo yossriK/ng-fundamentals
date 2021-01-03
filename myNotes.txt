@@ -560,4 +560,14 @@ this way can get us to a specific element, instead of binding to the whole thing
 also notice how we referenced the ref for that modal container
 
 --== Creating setting on component: 
-what if dont want to close if they click inside the box
+what if dont want to close if they click inside the box: check the closeOnBodyClick
+
+
+
+            --=== More Components and Custom Validators
+--== Creating a voting component
+basic componet creatiion and event binding
+
+--== Adding voting functionality
+trackigni if they have voted or not by their usernames
+notice how we added cuntionality in the session-list and added another votign service: notice how smooth these finctions are in the service dammn
