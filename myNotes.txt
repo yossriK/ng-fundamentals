@@ -503,3 +503,46 @@ have multiple methods of that big one, wehn they ask for MinimalService they get
 
 {provide: Service, useFactory: Service }: allows you to pass parameters on the creation of that injected service, so you can paramaterize the creation of an object: if you need to construct an instance 
 of a class to use in a service then that is the way 
+
+
+
+                --== Creating directives and advanced compnents in angular
+--== Implementing the session search: just looking for some specific sessions only not events
+    navigate from that session then to the parent event
+    (ngSubmit) custom event exists on the form
+    this example was added in navbar: check it out
+    also we got a service to handle our search logic: not the component it self
+
+    also notice how he added the event id for session to map them to each corresponding event later. we returned an observable using an event emitter, there should be other methods I guess
+    then notice how we mimic the delay of an actuall http call lmao
+
+--== Adding jquery
+need to create a wrapper for third party service like we did with toastr
+we are doing this because its tricky to display those session search results
+
+--== Creating a modal component
+this modal was used in the navbar area, notice our router link how no moatter wehre we do search it will be able to navigate us to that specific event
+    <div id="simple-modal" class="modal fade" tabindex="-1">
+we had to have same id as name of the modal, calss of modal to tell bootstrap and jquery that htis is modal
+
+--== Creating Directives: the trigger Directive
+opening the modal when you search for somethin. now we need to use jQuery for that: Jim cooper didnt want to just have method binded to the search button 
+instead wanted to hide the implementaion; which will be using a directive, so button triggers the compoenet: like in the html add a directive: modal-trigger:: check navbar.comppoent.ts again.
+go to the modal-trigger directive and see how we set the selector to be directvie, not element
+
+notice how we wanted to start teh trigger in ngonint, and how we used elementRef
+ so basically we have now a modal trigger to trigger the simplemodal when you click the search method. taking advantage of hte jQuery and not
+ just simply binding to an a function as this will tightly bind navbar to that modal
+
+ pay special attention to how we call the id of the modal we want to trigger
+
+
+--==  Binding an Id: see how binded to that id         this.$('#simple-modal').modal({}); // this is the id of the modal i want to trigger
+ and thus there cant be another id and woudl prevent us to use that same modal again
+ thus we bind and tell it what property it would have based on our content pojection in the navbar compponent   : we used elementId="searchResults"
+ and that would be an input property in our simple-modal component
+ we also have to pass that id into the trigger. notice how it was done in the trigger attribute
+           <button class="btn btn-default" modal-trigger="searchResults">
+
+
+--== Routing to the same comopnenet
