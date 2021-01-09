@@ -606,3 +606,101 @@ only worked on that node. we needed the url input to change validty of the addre
 of the #locationGroup we added on the address div and that ref can actually be seen on other siblings lol
 
 (change) event thats emitted whenever an html input value changes
+
+
+
+
+        --==Communication with the server using http observables and RXjs
+
+-== promises vs observables
+promises: one value that comes in the future: async only
+observable: represents 0 or more values that come now or in the future: sync or async
+observvalbles allows us to operate on the stream and choose soeme values to work with
+better error handling, can deal with time, has advanced operations and can combine operations
+
+however, http requests(unless we usign sockets), that response is one unit of data so promise works here just fine
+but angular returns those http responses as observables.
+it still allows you to cast with toPromise().
+
+what we saying is : promise isnt the silver bullet for http, promise still work,
+    but observable also works, so up to you. 
+    not recomennded to use promises as much anymore
+
+
+--=== Preparing to store data on server
+tutor installed a simple server made for the scope of this course
+notice how we added a new call for it in angularjson file and how we ran the server
+we also need a new proxy file to tell our cli to talk to that server in case I make any requests starting with api: this was for dev mode
+
+also need to modify "start" commnad: pass to it the proxy configuration: --proxy-config <proxy config file name> 
+
+this arragnment for dev: running cli server and new http server(that we installed)
+broweser making http calls to cli server mainly, once these requests start with api: i want to route them to the http server I created a bit ago
+
+in production server would be mainly talking to that httpserver.
+
+in appmodule has to tell it i am talking to http server now: HttpClient module
+
+-=-=Moving data storage to server: his server already got built in responses for our requests and stuff
+HttpClient http class has many mehtods like get and post that we need to make use of 
+good thing is to also make a error handler method in case your gets fail: this can be piped into operator of hte observable
+
+in resolver: angular has built in finctions that subscribes to the observable once it called. in other components you have to explicity subscribe to the observable
+http call wont emit any of those values until you subscribe to them..
+
+
+
+    you can use the intellisence to give you hint of how the http calls should look like
+
+--== Listening to resolved data changes
+in events.service.ts he had to update the signature of one method
+now in all modfied methods you have to subscribe to get a value from the data stream
+if you recall the getEvent route was gaurded but now wiht observable its better to just resolve it
+notice how the resolve function can take an Activatedroutesnashot and get that id value from snapshot and fetch our data. in teh service thsi. dont forget the resolver need to added to app moduels and your routes
+http call in service, the component used to initiate  teh call to service in the ngoint, but now this can be done thru the resolver
+so once routed to that compnent, resovler kicks in to get the values and component would jsut take these value off from the resovler
+
+
+
+--=-= PUT and POST mehtods
+post takes url, object we posting, and options that specified header for example.
+good practice, even tho I make a post of some object I already got but what if server edits/sets id of that object
+
+his server is smart to know if im sending data with id(im jsut updating) or not( in case of creating new data in server)
+
+--== using query string  parameters:
+searching will be done on server.
+notice how he used query stirng params:
+http.get<Y>('api/sess/search?search='+searchItem);
+
+
+--== Usign Delete
+you can pass all stuff in the url itself as string interpolation. 
+his server handles upvoting of the session, and marking the name of user who voted for that
+
+his voting methods were self subscribing as i didnt care in component what there return value was
+
+--== Integrating authentication with the server
+want the server to check username and password. have library called passport to authorize users lol on the node server
+we need to set the current user property
+its up to you how the server authenticate the user. 
+
+I am tapping to observable before subscribing: allows me to read the data coming but not manipulating
+his server just checks for username lmao
+
+
+--== Persisting login information across page refresh
+on my client, once I refresh I lose my authentication but my server still knows I am logged in
+added that functionality in the auth service. our eventsapp component would be called on every hard refresh, so makes sense to put initial logic there to 
+hook to authservice
+
+we piped the data coming back from api/currentIdentity from server to read if user logged in or not: in authservice checkAuthenticationStatus()
+we couldve subscribed and read data from returning response of subscription, but its cleaner this way, and let the end user decide if they need anything wiht that subscription 
+I return observable in case I am not subscribing to it in that function, letting hte initial callign code subscribe to it.
+
+
+--== implementing log out
+call to server to logout, which supposed to delete that persistent user instance 
+returns observable that you subscribe to, in case of success you just redirect to login and clear local storage
+
+//TODO wire up the events drop down menu
